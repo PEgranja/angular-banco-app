@@ -1,0 +1,33 @@
+<div>
+  <input
+    type="text"
+    id="filter"
+    placeholder="Filtrar..."
+    (input)="applyFilter($event)"
+  />
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Columna 1</th>
+      <th>Columna 2</th>
+      <th>Columna 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(row of paginatedData; track row){
+    <tr>
+      <td>{{ row.col1 }}</td>
+      <td>{{ row.col2 }}</td>
+      <td>{{ row.col3 }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+<div class="pagination">
+  @for(page of totalPages; track page){
+  <a (click)="goToPage(page)" [class.active]="currentPage === page">{{
+    page
+  }}</a>
+  }
+</div>
