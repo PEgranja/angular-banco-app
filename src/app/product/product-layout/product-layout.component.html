@@ -1,4 +1,4 @@
-@if(productResults$ | async; as resultObject) {
+@if(productResults$ | async; as resultProduct) {
 <div
   style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"
 >
@@ -23,23 +23,24 @@
     </tr>
   </thead>
   <tbody>
-    @if(resultObject.data.length === 0){
+    @if(resultProduct.data.length === 0){
     <tr>
       <td colspan="6" style="text-align: center; padding: 20px">No existen productos.</td>
     </tr>
-    } @for(row of displayedData; track row){
+    } @for(product of displayedData; track product){
     <tr>
-      <td><img [src]="row.logo" alt="Logo" width="50" /></td>
-      <td>{{ row.name }}</td>
-      <td>{{ row.description }}</td>
-      <td>{{ row.date_release }}</td>
-      <td>{{ row.date_revision }}</td>
+      <td><img [src]="product.logo" alt="Logo" width="50" /></td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.description }}</td>
+      <td>{{ product.date_release }}</td>
+      <td>{{ product.date_revision }}</td>
       <td>
         <div class="dropdown">
           <button class="dropbtn">Acciones</button>
           <div class="dropdown-content">
-            <a href="#" (click)="editItem(row)">Editar</a>
-            <a href="#" (click)="deleteItem(row)">Eliminar</a>
+            <!-- <a href="#" (click)="editItem(row.id)">Editar</a> -->
+            <a class="" [routerLink]="['/edit-product', product.id]">Editar</a>
+            <a href="#" (click)="deleteItem(product)">Eliminar</a>
           </div>
         </div>
       </td>
@@ -50,7 +51,7 @@
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px">
   <div>
-    <p>Total de productos: {{ resultObject.data.length }}</p>
+    <p>Total de productos: {{ resultProduct.data.length }}</p>
   </div>
   <div style="display: flex; align-items: center">
     <label for="itemsPerPage" style="margin-right: 10px">Mostrar</label>
@@ -64,3 +65,5 @@
 } @if (errorMessage) {
 <app-error-message [errorMessage]="errorMessage" />
 }
+
+<app-product-delete-modal></app-product-delete-modal>

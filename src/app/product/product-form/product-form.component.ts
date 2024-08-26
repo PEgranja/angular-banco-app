@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {releaseDateValidator} from '../../shared/directives/release-date-validator.directive';
 import {ProductService} from '../../core/services/product.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product-form',
@@ -11,6 +12,7 @@ import {ProductService} from '../../core/services/product.service';
   styleUrl: './product-form.component.scss',
 })
 export class ProductFormComponent implements OnInit {
+  @Input() id!: string;
   productForm: FormGroup = new FormGroup({
     id: new FormControl('', [
       Validators.required,
@@ -32,28 +34,31 @@ export class ProductFormComponent implements OnInit {
     date_revision: new FormControl('', [Validators.required]),
   });
 
-  formValue: any;
+  constructor(private service: ProductService, private router: Router) {
+    /*this.router.events.subscribe((event) => {
+      console.log(event);
+    });*/
+  }
 
-  constructor(private service: ProductService) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.id);
+    if (this.id) {
+      this.productForm.get('id')!.patchValue(this.id);
+      this.productForm.get('id')?.disable();
+    }
+  }
 
   onSave() {
     //if (this.productForm.valid) {
-    this.formValue = this.productForm.value;
-    this.service.postProduct(this.formValue).subscribe(
-      (res) => {
-        if (res.status == 200) {
-          console.log(res);
-        }
-      },
-      (err) => {
-        alert('There was a problem');
-      },
-    );
+    if (this.id) {
+      this.service.putProduct(this.id, this.productForm.value);
+    } else {
+      this.service.postProduct(this.productForm.value);
+    }
 
     console.log('Nuevo producto agregado:', this.productForm.value);
     this.resetForm();
+    this.router.navigate(['']);
     //}
   }
 

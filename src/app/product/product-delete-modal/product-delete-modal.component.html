@@ -1,0 +1,11 @@
+@if(isModalOpen) {
+<div class="modal-backdrop">
+  <div class="modal-content">
+    <p>¿Estás seguro que deseas eliminar el producto "{{ productName }}"?</p>
+    <div class="modal-buttons">
+      <button (click)="closeModal()">Cancelar</button>
+      <button (click)="confirmDelete()">Eliminar</button>
+    </div>
+  </div>
+</div>
+}

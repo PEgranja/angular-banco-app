@@ -1,29 +1,45 @@
 import {AsyncPipe} from '@angular/common';
-import {Component, OnInit} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  contentChild,
+  effect,
+  OnInit,
+  viewChild,
+  ViewChild,
+} from '@angular/core';
 import {ProductService} from '../../core/services/product.service';
 import {catchError, EMPTY, map, Observable} from 'rxjs';
-import {ProductResults} from '../../core/models/product.interface';
-import {Router} from '@angular/router';
+import {Product, ProductResults} from '../../core/models/product.interface';
+import {Router, RouterModule} from '@angular/router';
 import {ErrorMessageComponent} from '../../error/error-message/error-message.component';
+import {ProductDeleteModalComponent} from '../product-delete-modal/product-delete-modal.component';
 
 @Component({
   selector: 'app-product-layout',
   standalone: true,
-  imports: [AsyncPipe, ErrorMessageComponent],
+  imports: [AsyncPipe, ErrorMessageComponent, RouterModule, ProductDeleteModalComponent],
   templateUrl: './product-layout.component.html',
   styleUrl: './product-layout.component.scss',
 })
 export class ProductLayoutComponent implements OnInit {
+  @ViewChild(ProductDeleteModalComponent) modal!: ProductDeleteModalComponent;
+
   productResults$!: Observable<ProductResults>;
   errorMessage!: string;
   itemsPerPage: number = 5;
   displayedData: any[] = [];
   filteredData: any[] = [];
   filterText: string = '';
+  isEdit = true;
 
   constructor(private service: ProductService, private router: Router) {}
 
   ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts() {
     this.productResults$ = this.service.getProductList();
     this.productResults$
       .pipe(
@@ -75,27 +91,12 @@ export class ProductLayoutComponent implements OnInit {
     this.router.navigate(['/add-product']);
   }
 
-  editItem(item: any) {
-    // Lógica para editar un ítem
-    console.log('Editar ítem', item);
+  deleteItem(product: Product) {
+    this.modal.productName = product.name;
+    this.modal.id = product.id;
+    this.modal.openModal();
+    this.modal.productDeleted.subscribe(() => {
+      this.loadProducts();
+    });
   }
-
-  deleteItem(item: any) {
-    // Lógica para eliminar un ítem
-    console.log('Eliminar ítem', item);
-  }
-
-  /*updatePagination() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedData = this.filteredData.slice(startIndex, endIndex);
-    this.totalPages = Array(Math.ceil(this.filteredData.length / this.itemsPerPage))
-      .fill(0)
-      .map((x, i) => i + 1);
-  }
-
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.updatePagination();
-  }*/
 }

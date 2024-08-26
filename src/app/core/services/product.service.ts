@@ -15,8 +15,19 @@ export class ProductService {
   }
 
   postProduct(product: Product) {
-    return this.http.post(`${environment.apiUrlBase}`, product, {
-      observe: 'response',
+    return this.http.post(`${environment.apiUrlBase}`, product).subscribe((response) => {
+      console.log('Updated config:', response);
+    });
+  }
+
+  putProduct(id: string, product: Product) {
+    return this.http.put(`${environment.apiUrlBase}/${id}`, product).subscribe((response) => {
+      console.log('Updated config:', response);
+    });
+  }
+  deleteProduct(id: string) {
+    return this.http.delete(`${environment.apiUrlBase}/${id}`).subscribe((response) => {
+      console.log('Updated config:', response);
     });
   }
 }
