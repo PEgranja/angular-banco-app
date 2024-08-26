@@ -1,0 +1,103 @@
+table {
+  width: 100%;
+  border-collapse: collapse; // Para que las líneas de separación se vean bien
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd; // Línea de separación para las celdas
+  }
+
+  th {
+    background-color: #f2f2f2; // Color de fondo para la primera fila (encabezados)
+    color: #333;
+    font-weight: bold;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #f9f9f9; // Color de fondo para filas impares
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #ffffff; // Color de fondo para filas pares
+  }
+
+  tbody tr:hover {
+    background-color: #f1f1f1; // Efecto hover en las filas
+  }
+
+  tbody tr:first-child {
+    background-color: #e9ecef; // Color diferente para la primera fila (si necesitas un estilo especial)
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+
+    .dropbtn {
+      background-color: #007bff;
+      color: white;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 4px;
+
+      a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid #ddd;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+      }
+    }
+
+    &:hover .dropdown-content {
+      display: block;
+    }
+
+    &:hover .dropbtn {
+      background-color: #0056b3;
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+
+  a {
+    margin: 0 5px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    &.active {
+      background-color: #007bff;
+      color: white;
+      border: 1px solid #007bff;
+    }
+  }
+}

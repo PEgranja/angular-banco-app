@@ -10,3 +10,8 @@ export interface Product {
 export interface ProductResults {
   data: Product[];
 }
+
+export interface ProductResponse {
+  message: string;
+  data: Product;
+}

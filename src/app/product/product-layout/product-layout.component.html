@@ -1,1 +1,66 @@
-<p>product-layout works!</p>
+@if(productResults$ | async; as resultObject) {
+<div
+  style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"
+>
+  <input
+    type="text"
+    id="filter"
+    placeholder="Filtrar..."
+    (input)="applyFilter($event)"
+    style="flex: 1; margin-right: 10px"
+  />
+  <button (click)="addNewItem()">Agregar</button>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Logo</th>
+      <th>Nombre del producto</th>
+      <th>Descripción</th>
+      <th>Fecha de liberación</th>
+      <th>Fecha de reestructuración</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(resultObject.data.length === 0){
+    <tr>
+      <td colspan="6" style="text-align: center; padding: 20px">No existen productos.</td>
+    </tr>
+    } @for(row of displayedData; track row){
+    <tr>
+      <td><img [src]="row.logo" alt="Logo" width="50" /></td>
+      <td>{{ row.name }}</td>
+      <td>{{ row.description }}</td>
+      <td>{{ row.date_release }}</td>
+      <td>{{ row.date_revision }}</td>
+      <td>
+        <div class="dropdown">
+          <button class="dropbtn">Acciones</button>
+          <div class="dropdown-content">
+            <a href="#" (click)="editItem(row)">Editar</a>
+            <a href="#" (click)="deleteItem(row)">Eliminar</a>
+          </div>
+        </div>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px">
+  <div>
+    <p>Total de productos: {{ resultObject.data.length }}</p>
+  </div>
+  <div style="display: flex; align-items: center">
+    <label for="itemsPerPage" style="margin-right: 10px">Mostrar</label>
+    <select id="itemsPerPage" (change)="changeItemsPerPage($event)">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+  </div>
+</div>
+} @if (errorMessage) {
+<app-error-message [errorMessage]="errorMessage" />
+}

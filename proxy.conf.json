@@ -1,0 +1,11 @@
+{
+  "/bp": {
+    "target": "http://localhost:3002/bp",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/bp": ""
+    }
+  }
+}

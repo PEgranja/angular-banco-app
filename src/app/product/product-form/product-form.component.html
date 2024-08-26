@@ -1,0 +1,82 @@
+<div class="container">
+  <h2>Registrar Nuevo Producto</h2>
+  <form [formGroup]="productForm" (ngSubmit)="onSave()" class="product-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="id">ID</label>
+        <input type="text" id="id" formControlName="id" />
+        @if(productForm.get('id')?.invalid && productForm.get('id')?.touched) {
+        <div>
+          @if(productForm.get('id')?.errors?.['required']) {
+          <small class="text-danger">Este campo es requerido</small>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="description">Descripción</label>
+        <input type="text" id="description" formControlName="description" />
+        @if(productForm.get('description')?.invalid && productForm.get('description')?.touched) {
+        <div>
+          @if(productForm.get('description')?.errors?.['required']) {
+          <small class="text-danger">Este campo es requerido</small>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="date_release">Fecha Liberación</label>
+        <input type="date" id="date_release" formControlName="date_release" />
+        @if(productForm.get('date_release')?.invalid && productForm.get('date_release')?.touched) {
+        <div>
+          @if(productForm.get('date_release')?.errors?.['required']) {
+          <small class="text-danger">Este campo es requerido</small>
+          } @if(productForm.get('id')?.errors?.['releaseDateValidator']) {
+          <small class="text-danger">La fecha debe ser mayor o igual a la fecha actual</small>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Nombre</label>
+        <input type="text" id="name" formControlName="name" />
+        @if(productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+        <div>
+          @if(productForm.get('name')?.errors?.['required']) {
+          <small class="text-danger">Este campo es requerido</small>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="logo">Logo</label>
+        <input type="text" id="logo" formControlName="logo" />
+        @if(productForm.get('logo')?.invalid && productForm.get('logo')?.touched) {
+        <div>
+          @if(productForm.get('logo')?.errors?.['required']) {
+          <small class="text-danger">Este campo es requerido</small>
+          }
+        </div>
+        }
+      </div>
+      <div class="form-group">
+        <label for="date_revision">Fecha Revisión</label>
+        <input type="date" id="date_revision" formControlName="date_revision" />
+        @if(productForm.get('date_revision')?.invalid && productForm.get('date_revision')?.touched)
+        {
+        <div>
+          @if(productForm.get('date_revision')?.errors?.['required']) {
+          <small class="text-danger">Este campo es requerido</small>
+          }
+        </div>
+        }
+      </div>
+    </div>
+    <div class="form-buttons">
+      <button type="button" (click)="resetForm()">Reiniciar</button>
+      <button type="submit" [disabled]="productForm.invalid">Agregar</button>
+    </div>
+  </form>
+</div>
