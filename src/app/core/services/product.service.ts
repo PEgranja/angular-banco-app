@@ -15,7 +15,7 @@ export class ProductService {
   }
 
   postProduct(product: Product) {
-    return this.http.post('http://localhost:3002/bp/products', product, {
+    return this.http.post(`${environment.apiUrlBase}`, product, {
       observe: 'response',
     });
   }

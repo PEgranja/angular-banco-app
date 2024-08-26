@@ -31,7 +31,7 @@
         <div>
           @if(productForm.get('date_release')?.errors?.['required']) {
           <small class="text-danger">Este campo es requerido</small>
-          } @if(productForm.get('id')?.errors?.['releaseDateValidator']) {
+          } @if(productForm.get('date_release')?.errors?.['releaseDateValidator']) {
           <small class="text-danger">La fecha debe ser mayor o igual a la fecha actual</small>
           }
         </div>
@@ -76,7 +76,7 @@
     </div>
     <div class="form-buttons">
       <button type="button" (click)="resetForm()">Reiniciar</button>
-      <button type="submit" [disabled]="productForm.invalid">Agregar</button>
+      <button type="submit">Agregar</button>
     </div>
   </form>
 </div>

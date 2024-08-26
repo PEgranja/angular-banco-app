@@ -1,17 +1,17 @@
-import {AsyncPipe} from "@angular/common";
-import {Component, OnInit} from "@angular/core";
-import {ProductService} from "../../core/services/product.service";
-import {catchError, EMPTY, map, Observable} from "rxjs";
-import {ProductResults} from "../../core/models/product.interface";
-import {Router} from "@angular/router";
-import {ErrorMessageComponent} from "../../error/error-message/error-message.component";
+import {AsyncPipe} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ProductService} from '../../core/services/product.service';
+import {catchError, EMPTY, map, Observable} from 'rxjs';
+import {ProductResults} from '../../core/models/product.interface';
+import {Router} from '@angular/router';
+import {ErrorMessageComponent} from '../../error/error-message/error-message.component';
 
 @Component({
-  selector: "app-product-layout",
+  selector: 'app-product-layout',
   standalone: true,
   imports: [AsyncPipe, ErrorMessageComponent],
-  templateUrl: "./product-layout.component.html",
-  styleUrl: "./product-layout.component.scss",
+  templateUrl: './product-layout.component.html',
+  styleUrl: './product-layout.component.scss',
 })
 export class ProductLayoutComponent implements OnInit {
   productResults$!: Observable<ProductResults>;
@@ -19,35 +19,23 @@ export class ProductLayoutComponent implements OnInit {
   itemsPerPage: number = 5;
   displayedData: any[] = [];
   filteredData: any[] = [];
-  filterText: string = "";
+  filterText: string = '';
 
   constructor(private service: ProductService, private router: Router) {}
 
   ngOnInit(): void {
     this.productResults$ = this.service.getProductList();
-    /*this.productResults$ = this.service.getProductList().pipe(
-      catchError((error: string) => {
-        this.errorMessage = error;
-        return EMPTY;
-      }),
-    );*/
     this.productResults$
       .pipe(
-        map((resultObject) => resultObject.data) /*,
+        map((resultObject) => resultObject.data),
         catchError((error: string) => {
           this.errorMessage = error;
           return EMPTY;
-        }),*/,
+        }),
       )
       .subscribe((data) => {
         this.filteredData = data;
         this.updateDisplayedData();
-        /*this.filteredData = data.filter(
-          (item) =>
-            item.name.toLowerCase().includes(this.filterText) ||
-            item.description.toLowerCase().includes(this.filterText),
-        );
-        this.updateDisplayedData();*/
       });
   }
 
@@ -65,28 +53,36 @@ export class ProductLayoutComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     this.filterText = target.value.toLowerCase();
 
-    this.productResults$.pipe(map((resultObject) => resultObject.data)).subscribe((data) => {
-      this.filteredData = data.filter(
-        (item) =>
-          item.name.toLowerCase().includes(this.filterText) ||
-          item.description.toLowerCase().includes(this.filterText),
-      );
-      this.updateDisplayedData();
-    });
+    this.productResults$
+      .pipe(
+        map((resultObject) => resultObject.data),
+        catchError((error: string) => {
+          this.errorMessage = error;
+          return EMPTY;
+        }),
+      )
+      .subscribe((data) => {
+        this.filteredData = data.filter(
+          (item) =>
+            item.name.toLowerCase().includes(this.filterText) ||
+            item.description.toLowerCase().includes(this.filterText),
+        );
+        this.updateDisplayedData();
+      });
   }
 
   addNewItem() {
-    this.router.navigate(["/add-product"]);
+    this.router.navigate(['/add-product']);
   }
 
   editItem(item: any) {
     // Lógica para editar un ítem
-    console.log("Editar ítem", item);
+    console.log('Editar ítem', item);
   }
 
   deleteItem(item: any) {
     // Lógica para eliminar un ítem
-    console.log("Eliminar ítem", item);
+    console.log('Eliminar ítem', item);
   }
 
   /*updatePagination() {
