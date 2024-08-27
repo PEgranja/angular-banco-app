@@ -1,4 +1,4 @@
-import {AsyncPipe} from '@angular/common';
+import {AsyncPipe} from "@angular/common";
 import {
   AfterViewInit,
   Component,
@@ -7,36 +7,56 @@ import {
   OnInit,
   viewChild,
   ViewChild,
-} from '@angular/core';
-import {ProductService} from '../../core/services/product.service';
-import {catchError, EMPTY, map, Observable} from 'rxjs';
-import {Product, ProductResults} from '../../core/models/product.interface';
-import {Router, RouterModule} from '@angular/router';
-import {ErrorMessageComponent} from '../../error/error-message/error-message.component';
-import {ProductDeleteModalComponent} from '../product-delete-modal/product-delete-modal.component';
+} from "@angular/core";
+import {ProductService} from "../../core/services/product.service";
+import {catchError, EMPTY, map, Observable} from "rxjs";
+import {Product, ProductResults} from "../../core/models/product.interface";
+import {Router, RouterModule} from "@angular/router";
+import {ErrorMessageComponent} from "../../error/error-message/error-message.component";
+import {ProductDeleteModalComponent} from "../product-delete-modal/product-delete-modal.component";
+import {ToasterComponent} from "../../shared/components/toaster/toaster.component";
+import {ToasterService} from "../../core/services/toaster.service";
 
 @Component({
-  selector: 'app-product-layout',
+  selector: "app-product-layout",
   standalone: true,
-  imports: [AsyncPipe, ErrorMessageComponent, RouterModule, ProductDeleteModalComponent],
-  templateUrl: './product-layout.component.html',
-  styleUrl: './product-layout.component.scss',
+  imports: [
+    AsyncPipe,
+    ErrorMessageComponent,
+    RouterModule,
+    ProductDeleteModalComponent,
+    ToasterComponent,
+  ],
+  templateUrl: "./product-layout.component.html",
+  styleUrl: "./product-layout.component.scss",
 })
 export class ProductLayoutComponent implements OnInit {
   @ViewChild(ProductDeleteModalComponent) modal!: ProductDeleteModalComponent;
+  @ViewChild(ToasterComponent) toaster!: ToasterComponent;
 
   productResults$!: Observable<ProductResults>;
   errorMessage!: string;
   itemsPerPage: number = 5;
   displayedData: any[] = [];
   filteredData: any[] = [];
-  filterText: string = '';
+  filterText: string = "";
   isEdit = true;
 
-  constructor(private service: ProductService, private router: Router) {}
+  constructor(
+    private service: ProductService,
+    private router: Router,
+    private toasterService: ToasterService,
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
+    this.toasterService.toast$.subscribe((data) => {
+      this.toaster.addMessage(data.text, data.type);
+    });
+    const message = this.toasterService.getMessage();
+    if (message) {
+      this.toasterService.showToast(message.message, message.type);
+    }
   }
 
   loadProducts() {
@@ -88,7 +108,7 @@ export class ProductLayoutComponent implements OnInit {
   }
 
   addNewItem() {
-    this.router.navigate(['/add-product']);
+    this.router.navigate(["/add-product"]);
   }
 
   deleteItem(product: Product) {
@@ -96,6 +116,7 @@ export class ProductLayoutComponent implements OnInit {
     this.modal.id = product.id;
     this.modal.openModal();
     this.modal.productDeleted.subscribe(() => {
+      this.toasterService.showToast("Producto eliminado correctamente.", "success");
       this.loadProducts();
     });
   }

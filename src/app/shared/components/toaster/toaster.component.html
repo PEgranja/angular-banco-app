@@ -1,0 +1,10 @@
+@if(messages.length > 0) {
+<div class="toaster-container">
+  @for(message of messages; track message) {
+  <div class="toaster-message" [ngClass]="message.type">
+    {{ message.text }}
+    <span class="close-btn" (click)="removeMessage(message)">×</span>
+  </div>
+  }
+</div>
+}
