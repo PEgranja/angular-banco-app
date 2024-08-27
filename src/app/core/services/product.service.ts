@@ -1,8 +1,8 @@
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
-import {Product, ProductResponse, ProductResults} from "../models/product.interface";
 import {Observable} from "rxjs";
 import {environment} from "../../../environments/environment.development";
+import {Product, ProductListResponse, ProductResponse} from "../models/product.interface";
 
 @Injectable({
   providedIn: "root",
@@ -10,25 +10,21 @@ import {environment} from "../../../environments/environment.development";
 export class ProductService {
   constructor(private http: HttpClient) {}
 
-  getProductList(): Observable<ProductResults> {
-    return this.http.get<ProductResults>(`${environment.apiUrlBase}`);
+  getProductList(): Observable<ProductListResponse> {
+    return this.http.get<ProductListResponse>(`${environment.apiUrlBase}`);
   }
 
-  postProduct(product: Product) {
+  saveProduct(product: Product) {
     // return this.http.post(`${environment.apiUrlBase}`, product).subscribe((response) => {
     //   console.log('Updated config:', response);
     // });
-    return this.http.post(`${environment.apiUrlBase}`, product);
+    return this.http.post<ProductResponse>(`${environment.apiUrlBase}`, product);
   }
 
-  putProduct(id: string, product: Product) {
-    return this.http.put(`${environment.apiUrlBase}/${id}`, product).subscribe((response) => {
-      console.log("Updated config:", response);
-    });
+  updateProduct(id: string, product: Product) {
+    return this.http.put<ProductResponse>(`${environment.apiUrlBase}/${id}`, product);
   }
   deleteProduct(id: string) {
-    return this.http.delete(`${environment.apiUrlBase}/${id}`).subscribe((response) => {
-      console.log("Updated config:", response);
-    });
+    return this.http.delete<ProductResponse>(`${environment.apiUrlBase}/${id}`);
   }
 }
