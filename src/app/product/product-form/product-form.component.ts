@@ -1,11 +1,10 @@
 import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {releaseDateValidator} from "../../shared/directives/release-date-validator.directive";
-import {ProductService} from "../../core/services/product.service";
 import {Router} from "@angular/router";
-import {ToasterComponent} from "../../shared/components/toaster/toaster.component";
+import {ProductService} from "../../core/services/product.service";
 import {ToasterService} from "../../core/services/toaster.service";
-import {response} from "express";
+import {ToasterComponent} from "../../shared/components/toaster/toaster.component";
+import {releaseDateValidator} from "../../shared/directives/release-date-validator.directive";
 
 @Component({
   selector: "app-product-form",
@@ -59,18 +58,31 @@ export class ProductFormComponent implements OnInit {
   onSave() {
     //if (this.productForm.valid) {
     if (this.id) {
-      this.service.putProduct(this.id, this.productForm.value);
-      this.toasterService.showToast("Producto actualizado correctamente.", "success");
-    } else {
-      this.service.postProduct(this.productForm.value).subscribe({
+      this.service.updateProduct(this.id, this.productForm.value).subscribe({
         next: (response) => {
           console.log(response);
-          this.toasterService.setMessage("Producto actualizado correctamente.", "success");
-          this.router.navigate([""]);
+          this.toasterService.showToast("Producto actualizado correctamente.", "success");
+          setTimeout(() => {
+            this.router.navigate([""]);
+          }, 3000);
         },
         error: (error) => {
           console.log(error);
           this.toasterService.showToast("Error al actualizar el producto.", "error");
+        },
+      });
+    } else {
+      this.service.saveProduct(this.productForm.value).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.toasterService.showToast("Producto guardado correctamente.", "success");
+          setTimeout(() => {
+            this.router.navigate([""]);
+          }, 3000);
+        },
+        error: (error) => {
+          console.log(error);
+          this.toasterService.showToast("Error al guardar el producto.", "error");
         },
       });
     }
