@@ -1,0 +1,40 @@
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+
+  p {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .home-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #032d5e;
+    font-size: 1.2rem;
+
+    .icon-bills {
+      margin-right: 8px;
+      width: 24px;
+      height: 24px;
+    }
+
+    &:hover {
+      color: #0056b3;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+
+    .home-link {
+      margin-top: 10px;
+    }
+  }
+}

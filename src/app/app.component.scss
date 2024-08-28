@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+app-header,
+app-footer {
+  background-color: #f8f9fa;
+}
+
+router-outlet {
+  background-color: #e9ecef;
+  padding: 20px;
+}
+
+app-footer {
+  border-top: 1px solid #dee2e6;
+}
+
+@media (max-width: 768px) {
+  router-outlet {
+    padding: 15px;
+  }
+}

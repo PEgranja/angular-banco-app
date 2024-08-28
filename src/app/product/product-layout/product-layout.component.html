@@ -1,13 +1,11 @@
 @if(productResults$ | async; as resultProduct) {
-<div
-  style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px"
->
+<div class="filter-container">
   <input
     type="text"
     id="filter"
-    placeholder="Filtrar..."
+    placeholder="Buscar..."
     (input)="applyFilter($event)"
-    style="flex: 1; margin-right: 10px"
+    style="flex: 1; margin-right: 10px; max-width: 150px"
   />
   <button (click)="addNewItem()">Agregar</button>
 </div>
@@ -19,7 +17,7 @@
       <th>Descripción</th>
       <th>Fecha de liberación</th>
       <th>Fecha de reestructuración</th>
-      <th>Acciones</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -36,9 +34,24 @@
       <td>{{ product.date_revision }}</td>
       <td>
         <div class="dropdown">
-          <button class="dropbtn">Acciones</button>
+          <button class="dropbtn">
+            <!-- Icono de tres puntos verticales -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon-dots"
+            >
+              <circle cx="12" cy="5" r="2"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+              <circle cx="12" cy="19" r="2"></circle>
+            </svg>
+          </button>
           <div class="dropdown-content">
-            <!-- <a href="#" (click)="editItem(row.id)">Editar</a> -->
             <a class="" [routerLink]="['/edit-product', product.id]">Editar</a>
             <a href="#" (click)="deleteItem(product)">Eliminar</a>
           </div>
@@ -49,7 +62,7 @@
   </tbody>
 </table>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px">
+<div class="info-container">
   <div>
     <p>Total de productos: {{ resultProduct.data.length }}</p>
   </div>

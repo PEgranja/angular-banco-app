@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ProductService} from '../../core/services/product.service';
-import {Router} from '@angular/router';
+import {ToasterService} from '../../core/services/toaster.service';
 
 @Component({
   selector: 'app-product-delete-modal',
@@ -16,7 +16,7 @@ export class ProductDeleteModalComponent {
 
   isModalOpen: boolean = false;
 
-  constructor(private service: ProductService, private router: Router) {}
+  constructor(private service: ProductService, private toasterService: ToasterService) {}
   openModal() {
     this.isModalOpen = true;
   }
@@ -26,9 +26,14 @@ export class ProductDeleteModalComponent {
   }
 
   confirmDelete() {
-    this.service.deleteProduct(this.id);
-    console.log(`Producto ${this.productName} eliminado`);
-    this.productDeleted.emit();
-    this.closeModal();
+    this.service.deleteProduct(this.id).subscribe({
+      next: (response) => {
+        this.productDeleted.emit();
+        this.closeModal();
+      },
+      error: (error) => {
+        this.toasterService.showToast('Error al eliminar el producto.', 'error');
+      },
+    });
   }
 }

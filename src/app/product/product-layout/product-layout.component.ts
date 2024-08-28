@@ -1,16 +1,17 @@
-import {AsyncPipe} from "@angular/common";
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {Router, RouterModule} from "@angular/router";
-import {catchError, EMPTY, map, Observable} from "rxjs";
-import {Product, ProductListResponse} from "../../core/models/product.interface";
-import {ProductService} from "../../core/services/product.service";
-import {ToasterService} from "../../core/services/toaster.service";
-import {ErrorMessageComponent} from "../../error/error-message/error-message.component";
-import {ToasterComponent} from "../../shared/components/toaster/toaster.component";
-import {ProductDeleteModalComponent} from "../product-delete-modal/product-delete-modal.component";
+import {AsyncPipe} from '@angular/common';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
+import {catchError, EMPTY, map, Observable} from 'rxjs';
+import {Product, ProductListResponse} from '../../core/models/product.interface';
+import {ProductService} from '../../core/services/product.service';
+import {ToasterService} from '../../core/services/toaster.service';
+import {ErrorMessageComponent} from '../../error/error-message/error-message.component';
+import {ToasterComponent} from '../../shared/components/toaster/toaster.component';
+import {ProductDeleteModalComponent} from '../product-delete-modal/product-delete-modal.component';
+import {error} from 'console';
 
 @Component({
-  selector: "app-product-layout",
+  selector: 'app-product-layout',
   standalone: true,
   imports: [
     AsyncPipe,
@@ -19,8 +20,8 @@ import {ProductDeleteModalComponent} from "../product-delete-modal/product-delet
     ProductDeleteModalComponent,
     ToasterComponent,
   ],
-  templateUrl: "./product-layout.component.html",
-  styleUrl: "./product-layout.component.scss",
+  templateUrl: './product-layout.component.html',
+  styleUrl: './product-layout.component.scss',
 })
 export class ProductLayoutComponent implements OnInit {
   @ViewChild(ProductDeleteModalComponent) modal!: ProductDeleteModalComponent;
@@ -31,7 +32,7 @@ export class ProductLayoutComponent implements OnInit {
   itemsPerPage: number = 5;
   displayedData: Product[] = [];
   filteredData: Product[] = [];
-  filterText: string = "";
+  filterText: string = '';
   isEdit = true;
 
   constructor(
@@ -52,7 +53,12 @@ export class ProductLayoutComponent implements OnInit {
   }
 
   loadProducts() {
-    this.productResults$ = this.service.getProductList();
+    this.productResults$ = this.service.getProductList().pipe(
+      catchError((error: string) => {
+        this.errorMessage = error;
+        return EMPTY;
+      }),
+    );
     this.productResults$.pipe(map((resultObject) => resultObject.data)).subscribe((data) => {
       this.filteredData = data;
       this.updateDisplayedData();
@@ -92,7 +98,7 @@ export class ProductLayoutComponent implements OnInit {
   }
 
   addNewItem() {
-    this.router.navigate(["/add-product"]);
+    this.router.navigate(['/add-product']);
   }
 
   deleteItem(product: Product) {
@@ -100,7 +106,7 @@ export class ProductLayoutComponent implements OnInit {
     this.modal.id = product.id;
     this.modal.openModal();
     this.modal.productDeleted.subscribe(() => {
-      this.toasterService.showToast("Producto eliminado correctamente.", "success");
+      this.toasterService.showToast('Producto eliminado correctamente.', 'success');
       this.loadProducts();
     });
   }
