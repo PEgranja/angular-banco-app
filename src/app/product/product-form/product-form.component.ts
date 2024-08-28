@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ProductService} from '../../core/services/product.service';
@@ -44,7 +44,6 @@ export class ProductFormComponent implements OnInit {
     private service: ProductService,
     private router: Router,
     private toasterService: ToasterService,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {

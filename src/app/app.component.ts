@@ -22,6 +22,4 @@ import {ToasterComponent} from './shared/components/toaster/toaster.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'banco-app20';
-}
+export class AppComponent {}

@@ -8,7 +8,6 @@ import {ToasterService} from '../../core/services/toaster.service';
 import {ErrorMessageComponent} from '../../error/error-message/error-message.component';
 import {ToasterComponent} from '../../shared/components/toaster/toaster.component';
 import {ProductDeleteModalComponent} from '../product-delete-modal/product-delete-modal.component';
-import {error} from 'console';
 
 @Component({
   selector: 'app-product-layout',
@@ -46,10 +45,6 @@ export class ProductLayoutComponent implements OnInit {
     this.toasterService.toast$.subscribe((data) => {
       this.toaster.addMessage(data.text, data.type);
     });
-    /*const message = this.toasterService.getMessage();
-    if (message) {
-      this.toasterService.showToast(message.message, message.type);
-    }*/
   }
 
   loadProducts() {
